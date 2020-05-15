@@ -1,0 +1,25 @@
+{
+    "extends": "./configs/tsconfig.base.json",
+    "compilerOptions": {
+        "importHelpers": true,
+        "module": "commonjs",
+        "allowJs": true,
+        "allowUnreachableCode": false,
+        "baseUrl": "../",
+        "experimentalDecorators": true,
+        "forceConsistentCasingInFileNames": true,
+        "jsx": "react",
+        "lib": [
+          "dom",
+          "es6"
+        ],
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noUnusedLocals": true,
+        "removeComments": true,
+        "sourceMap": true,
+        "target": "ES5"
+    }
+}
