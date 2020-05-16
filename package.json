@@ -1,6 +1,6 @@
 {
   "name": "react-async-saga-reducer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Use redux saga with useReducer hook to handle side effects without Redux",
   "main": "dist/index.js",
   "scripts": {

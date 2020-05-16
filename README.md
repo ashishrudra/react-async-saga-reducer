@@ -9,6 +9,7 @@ Use redux saga with React useReducer hook to handle side effects without Redux
     2. Redux-Saga
 
 ### usage
+[DEMO](https://codesandbox.io/s/react-async-saga-reducer-gitch)
 
 saga.js
 
