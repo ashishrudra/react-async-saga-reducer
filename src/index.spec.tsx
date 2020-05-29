@@ -4,18 +4,20 @@ import { shallow } from 'enzyme';
 import { useAsyncSagaReducer } from './';
 
 describe('useAsyncSagaReducer', () => {
+  type StateInterface = {foo: string};
+  type Action<T> = { type: string, payload?: T };
+
   it('initializes reducer with initial state and returns current state', () => {
     const useReducerSpy = jest.spyOn(React, 'useReducer');
-    const initialState = { foo: 'baz' };
-    const fooReducer = jest.fn((state, action) => state);
+    const initialState: StateInterface = { foo: 'baz' };
+    const fooReducer = jest.fn((state: StateInterface, action: Action<string>) => state);
 
     function* fooSaga() {
         yield true;
     }
 
     const TestReactComponent = () => {
-      const [state, ] = useAsyncSagaReducer(fooReducer, fooSaga, initialState);
-
+      const [state, ] = useAsyncSagaReducer<StateInterface, Action<string>>(fooReducer, fooSaga, initialState);
       return (<p className="current-state">{state.foo}</p>);
     };
 
