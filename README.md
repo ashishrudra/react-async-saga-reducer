@@ -13,59 +13,59 @@ Use redux saga with React useReducer hook to handle side effects without Redux
 
 saga.js
 ```javascript
-    import { put, takeEvery, delay } from 'redux-saga/effects';
+import { put, takeEvery, delay } from 'redux-saga/effects';
 
-    function* sagaWorker() {
-        let countDown = 5;
-        while(countDown > 0) {
-            yield put({type: 'UPDATE_TIMER', value: countDown});
-            yield delay(1000);
-            countDown -= 1;
-        }
-        yield put({type: 'INCREMENT'});
+function* sagaWorker() {
+    let countDown = 5;
+    while(countDown > 0) {
+        yield put({type: 'UPDATE_TIMER', value: countDown});
+        yield delay(1000);
+        countDown -= 1;
     }
+    yield put({type: 'INCREMENT'});
+}
 
-    export function* mySaga() {
-        yield takeEvery('ASYNC_INCREMENT', sagaWorker);
-    }
+export function* mySaga() {
+    yield takeEvery('ASYNC_INCREMENT', sagaWorker);
+}
 ```
 
 reducer.js
 
 ```javascript
-    export function myReducer(state, action) {
-        switch(action.type) {
-            case 'INCREMENT':
-                return { count: state.count + 1 , timer: 0 }
-            case 'UPDATE_TIMER':
-                return { count: state.count, timer: action.value }
-            default:
-                return state
-        }
+export function myReducer(state, action) {
+    switch(action.type) {
+        case 'INCREMENT':
+            return { count: state.count + 1 , timer: 0 }
+        case 'UPDATE_TIMER':
+            return { count: state.count, timer: action.value }
+        default:
+            return state
     }
+}
 ```
 
 app.js
 ```javascript
-    import React from 'react';
-    import { useAsyncSagaReducer } from 'react-async-saga-reducer';
-    import { myReducer } from './reducer';
-    import { mySaga } from './saga';
+import React from 'react';
+import { useAsyncSagaReducer } from 'react-async-saga-reducer';
+import { myReducer } from './reducer';
+import { mySaga } from './saga';
 
-    const initialState = { count: 0 , timer: 0 };
+const initialState = { count: 0 , timer: 0 };
 
-    export function App() {
-      const [ state, dispatch ] = useAsyncSagaReducer(myReducer, mySaga, initialState);
+export function App() {
+    const [ state, dispatch ] = useAsyncSagaReducer(myReducer, mySaga, initialState);
 
-      return (
-        <div className="App">
-            <p>Count: {state.count}</p>
-            <br/>
-            <button onClick={() => dispatch({type: 'ASYNC_INCREMENT'})} disabled={state.timer > 0}>Increment after 5 second</button>
-            {state.timer > 0 && <p>...please wait {state.timer} sec...</p>}
-        </div>
-      );
-    }
+    return (
+    <div className="App">
+        <p>Count: {state.count}</p>
+        <br/>
+        <button onClick={() => dispatch({type: 'ASYNC_INCREMENT'})} disabled={state.timer > 0}>Increment after 5 second</button>
+        {state.timer > 0 && <p>...please wait {state.timer} sec...</p>}
+    </div>
+    );
+}
 ```
 
 ### TypeScript
@@ -73,35 +73,35 @@ Type annotations may be specified when calling useAsyncSagaReducer:
 
 ```javascript
 import React from 'react';
-    import { useAsyncSagaReducer } from 'react-async-saga-reducer';
-    import { myReducer } from './reducer';
-    import { mySaga } from './saga';
+import { useAsyncSagaReducer } from 'react-async-saga-reducer';
+import { myReducer } from './reducer';
+import { mySaga } from './saga';
 
-    // define type for State.
-    export interface StateInterface: {
-        count: number;
-        timer: number;
-    }
+// define type for State.
+export interface StateInterface: {
+    count: number;
+    timer: number;
+}
 
-    // define type for action
-    export interface Action<T> {
-        type: string;
-        payload?: T
-    }
+// define type for action
+export interface Action<T> {
+    type: string;
+    payload?: T
+}
 
-    export function App() {
-        //specify types to gain intelligent code completion and TypeScript type checking.
-        const [ state, dispatch ] = useAsyncSagaReducer<StateInterface, Action<Number>>(myReducer, mySaga, initialState);
+export function App() {
+    //specify types to gain intelligent code completion and TypeScript type checking.
+    const [ state, dispatch ] = useAsyncSagaReducer<StateInterface, Action<Number>>(myReducer, mySaga, initialState);
 
-        return (
-            <div className="App">
-                <p>Count: {state.count}</p>
-                <br/>
-                <button onClick={() => dispatch({type: 'ASYNC_INCREMENT'})} disabled={state.timer > 0}>Increment after 5 second</button>
-                {state.timer > 0 && <p>...please wait {state.timer} sec...</p>}
-            </div>
-        );
-    }
+    return (
+        <div className="App">
+            <p>Count: {state.count}</p>
+            <br/>
+            <button onClick={() => dispatch({type: 'ASYNC_INCREMENT'})} disabled={state.timer > 0}>Increment after 5 second</button>
+            {state.timer > 0 && <p>...please wait {state.timer} sec...</p>}
+        </div>
+    );
+}
 
 ```
 
