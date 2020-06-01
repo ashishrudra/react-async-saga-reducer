@@ -12,7 +12,7 @@ Use redux saga with React useReducer hook to handle side effects without Redux
 [DEMO](https://codesandbox.io/s/react-async-saga-reducer-gitch)
 
 saga.js
-
+```javascript
     import { put, takeEvery, delay } from 'redux-saga/effects';
 
     function* sagaWorker() {
@@ -28,9 +28,11 @@ saga.js
     export function* mySaga() {
         yield takeEvery('ASYNC_INCREMENT', sagaWorker);
     }
+```
 
 reducer.js
 
+```javascript
     export function myReducer(state, action) {
         switch(action.type) {
             case 'INCREMENT':
@@ -41,9 +43,10 @@ reducer.js
                 return state
         }
     }
+```
 
 app.js
-
+```javascript
     import React from 'react';
     import { useAsyncSagaReducer } from 'react-async-saga-reducer';
     import { myReducer } from './reducer';
@@ -63,6 +66,43 @@ app.js
         </div>
       );
     }
+```
 
-### note
-Also works with typescript
+### TypeScript
+Type annotations may be specified when calling useAsyncSagaReducer:
+
+```javascript
+import React from 'react';
+    import { useAsyncSagaReducer } from 'react-async-saga-reducer';
+    import { myReducer } from './reducer';
+    import { mySaga } from './saga';
+
+    // define type for State.
+    export interface StateInterface: {
+        count: number;
+        timer: number;
+    }
+
+    // define type for action
+    export interface Action<T> {
+        type: string;
+        payload?: T
+    }
+
+    export function App() {
+        //specify types to gain intelligent code completion and TypeScript type checking.
+        const [ state, dispatch ] = useAsyncSagaReducer<StateInterface, Action<Number>>(myReducer, mySaga, initialState);
+
+        return (
+            <div className="App">
+                <p>Count: {state.count}</p>
+                <br/>
+                <button onClick={() => dispatch({type: 'ASYNC_INCREMENT'})} disabled={state.timer > 0}>Increment after 5 second</button>
+                {state.timer > 0 && <p>...please wait {state.timer} sec...</p>}
+            </div>
+        );
+    }
+
+```
+
+
